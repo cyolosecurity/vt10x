@@ -34,5 +34,5 @@ type Color uint32
 
 // ANSI returns true if Color is within [0, 16).
 func (c Color) ANSI() bool {
-	return (c < 16)
+	return c < 16
 }

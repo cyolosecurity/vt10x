@@ -183,7 +183,6 @@ func (t *State) handleCSI() {
 		t.restoreCursor()
 	}
 	return
-unknown: // TODO: get rid of this goto
+unknown:
 	t.logf("unknown CSI sequence '%c'\n", c.mode)
-	// TODO: c.dump()
 }

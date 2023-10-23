@@ -24,14 +24,12 @@ func (s *strEscape) reset() {
 }
 
 func (s *strEscape) put(c rune) {
-	// TODO: improve allocs with an array backed slice; bench first
 	if len(s.buf) < 256 {
 		s.buf = append(s.buf, c)
 	}
 	// Going by st, it is better to remain silent when the STR sequence is not
 	// ended so that it is apparent to users something is wrong. The length sanity
 	// check ensures we don't absorb the entire stream into memory.
-	// TODO: see what rxvt or xterm does
 }
 
 func (s *strEscape) parse() {
@@ -81,7 +79,6 @@ func (t *State) handleSTR() {
 			} else if err := t.setColorName(int(DefaultFG), p); err != nil {
 				t.logf("invalid foreground color: %s\n", maybe(p))
 			} else {
-				// TODO: redraw
 			}
 		case 11:
 			if len(s.args) < 2 {
@@ -95,22 +92,7 @@ func (t *State) handleSTR() {
 			} else if err := t.setColorName(int(DefaultBG), p); err != nil {
 				t.logf("invalid cursor color: %s\n", maybe(p))
 			} else {
-				// TODO: redraw
 			}
-		// case 12:
-		// if len(s.args) < 2 {
-		// 	break
-		// }
-
-		// c := s.argString(1, "")
-		// p := &c
-		// if p != nil && *p == "?" {
-		// 	t.oscColorResponse(int(DefaultCursor), 12)
-		// } else if err := t.setColorName(int(DefaultCursor), p); err != nil {
-		// 	t.logf("invalid background color: %s\n", p)
-		// } else {
-		// 	// TODO: redraw
-		// }
 		case 4: // color set
 			if len(s.args) < 3 {
 				break
@@ -131,11 +113,9 @@ func (t *State) handleSTR() {
 					t.logf("invalid color j=%d, p=%s\n", j, maybe(p))
 				}
 			} else {
-				// TODO: redraw
 			}
 		default:
 			t.logf("unknown OSC command %d\n", d)
-			// TODO: s.dump()
 		}
 	case 'k': // old title set compatibility
 		title := s.argString(0, "")
@@ -143,7 +123,6 @@ func (t *State) handleSTR() {
 			t.setTitle(title)
 		}
 	default:
-		// TODO: Ignore these codes instead of complain?
 		// 'P': // DSC - device control string
 		// '_': // APC - application program command
 		// '^': // PM - privacy message

@@ -176,13 +176,6 @@ func (t *State) Title() string {
 	return t.title
 }
 
-/*
-// ChangeMask returns a bitfield of changes that have occured by VT.
-func (t *State) ChangeMask() ChangeFlag {
-	return t.changed
-}
-*/
-
 // Changed returns true if change has occured.
 func (t *State) Changed(change ChangeFlag) bool {
 	return t.changed&change != 0
@@ -267,7 +260,7 @@ func (t *State) setChar(c rune, attr *Glyph, x, y int) {
 	t.dirty[y] = true
 	t.lines[y][x] = *attr
 	t.lines[y][x].Char = c
-	//if t.options.BrightBold && attr.Mode&attrBold != 0 && attr.FG < 8 {
+
 	if attr.Mode&attrBold != 0 && attr.FG < 8 {
 		t.lines[y][x].FG = attr.FG + 8
 	}
@@ -300,7 +293,6 @@ func (t *State) reset() {
 	t.moveTo(0, 0)
 }
 
-// TODO: definitely can improve allocs
 func (t *State) resize(cols, rows int) bool {
 	if cols == t.cols && rows == t.rows {
 		return false
@@ -380,8 +372,12 @@ func (t *State) clear(x0, y0, x1, y1 int) {
 	}
 }
 
-func (t *State) clearAll() {
+func (t *State) ClearAll() {
 	t.clear(0, 0, t.cols-1, t.rows-1)
+}
+
+func (t *State) ResetCursor() {
+	t.moveTo(0, 0)
 }
 
 func (t *State) moveAbsTo(x, y int) {

@@ -12,7 +12,7 @@ type Terminal interface {
 	// View displays the virtual terminal.
 	View
 
-	// Write parses input and writes terminal changes to state.
+	// Writer Write parses input and writes terminal changes to state.
 	io.Writer
 
 	// Parse blocks on read on pty or io.Reader, then parses sequences until
@@ -23,7 +23,7 @@ type Terminal interface {
 
 // View represents the view of the virtual terminal emulator.
 type View interface {
-	// String dumps the virtual terminal contents.
+	// Stringer String dumps the virtual terminal contents.
 	fmt.Stringer
 
 	// Size returns the size of the virtual terminal.
@@ -47,6 +47,12 @@ type View interface {
 
 	// CursorVisible returns the visible state of the cursor.
 	CursorVisible() bool
+
+	// ClearAll clears the entire grid.
+	ClearAll()
+
+	// ResetCursor resets the cursor position to (0,0).
+	ResetCursor()
 
 	// Lock locks the state object's mutex.
 	Lock()

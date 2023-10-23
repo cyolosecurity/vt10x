@@ -72,7 +72,6 @@ func (t *State) parseEsc(c rune) {
 			t.moveTo(t.cur.X, t.cur.Y-1)
 		}
 	case 'Z': // DECID - identify terminal
-		// TODO: write to our writer our id
 	case 'c': // RIS - reset to initial state
 		t.reset()
 	case '=': // DECPAM - application keypad
@@ -181,8 +180,7 @@ func (t *State) handleControlCodes(c rune) bool {
 		t.newline(t.mode&ModeCRLF != 0)
 	// BEL
 	case '\a':
-		// TODO: emit sound
-		// TODO: window alert if not focused
+
 	// ESC
 	case 033:
 		t.csi.reset()
